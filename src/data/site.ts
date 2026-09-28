@@ -1,4 +1,7 @@
 // Central business details. Update here and every page picks it up.
+const whatsappNumber = '447464382476'; // international format, no + or spaces
+const whatsappMessage = "Hi Ashley, I found you on the AJH website and I'd like to talk about a project.";
+
 export const site = {
   name: 'AJH Building Contractors Ltd',
   tagline: 'Turn Your Dreams into Reality!',
@@ -6,25 +9,53 @@ export const site = {
   phone: '01462 612168',
   phoneHref: 'tel:+441462612168',
   mobile: '07464 382476',
-  mobileHref: 'tel:+447464382476',
+  // Mobile number opens a WhatsApp chat with a pre-filled message.
+  whatsappHref: `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`,
   email: 'info@ajhbuildingcontractors.com',
   hours: 'Monday – Friday 8AM-5PM',
   hoursShort: '8AM - 5PM',
-  social: {
-    facebook: 'https://www.facebook.com/ajhbuild/',
-    twitter: 'https://twitter.com/AshleyHarknett',
-    instagram: 'https://www.instagram.com/ashley_harknett/',
-  },
   about:
     'We are a family run building company based in Hertfordshire. Since 2000 we have been providing professional building services covering domestic renovations, period refurbishments, building extensions, basements and loft conversions in and around Hertfordshire.',
+  owner: {
+    name: 'Ashley Harknett',
+    firstName: 'Ashley',
+    role: 'Owner, Head Builder & Project Manager',
+  },
 };
+
+export type SocialKey = 'facebook' | 'instagram' | 'twitter';
+
+export const socials: { key: SocialKey; label: string; handle: string; href: string; blurb: string }[] = [
+  {
+    key: 'facebook',
+    label: 'Facebook',
+    handle: '@ajhbuild',
+    href: 'https://www.facebook.com/ajhbuild/',
+    blurb: 'Project updates, before & afters and news from site.',
+  },
+  {
+    key: 'instagram',
+    label: 'Instagram',
+    handle: '@ashley_harknett',
+    href: 'https://www.instagram.com/ashley_harknett/',
+    blurb: 'Photos and reels from current builds as they happen.',
+  },
+  {
+    key: 'twitter',
+    label: 'X (Twitter)',
+    handle: '@AshleyHarknett',
+    href: 'https://twitter.com/AshleyHarknett',
+    blurb: 'Quick updates from Ashley.',
+  },
+];
 
 export const mainNav = [
   { label: 'Home', href: '/' },
+  { label: 'Services', href: '/#services', services: true },
+  { label: 'Projects', href: '/current-projects/' },
+  { label: 'Meet Ashley', href: '/meet-ashley/' },
   { label: 'About us', href: '/about-us/' },
-  { label: 'Current Projects', href: '/current-projects/' },
-  { label: 'Privacy Policy', href: '/privacy-policy/' },
-  { label: 'Contact Us', href: '/contactus/' },
+  { label: 'Contact', href: '/contactus/' },
 ];
 
 /** Prefix an internal path with the deploy base (e.g. /ajh-site). */

@@ -12,10 +12,10 @@ import { site } from '../data/site';
   <div class="contact-grid">
     <div><h4>Address</h4><p>{site.address}</p></div>
     <div><h4>Phone</h4><p><a href={site.phoneHref}>{site.phone}</a></p></div>
-    <div><h4>Mobile</h4><p><a href={site.mobileHref}>{site.mobile}</a></p></div>
+    <div><h4>Mobile / WhatsApp</h4><p><a href={site.whatsappHref} target="_blank" rel="noopener">{site.mobile}</a></p></div>
     <div><h4>Email</h4><p><a href={`mailto:${site.email}`}>{site.email}</a></p></div>
     <div><h4>Working hours</h4><p>{site.hours}</p></div>
   </div>
 
-  <ContactForm heading="Drop us an email" />
+  <ContactForm />
 </Layout>

@@ -1,0 +1,43 @@
+---
+// "Follow our latest projects" block. Sends visitors to the social accounts, where new work is posted.
+import Icon from './Icon.astro';
+import { socials } from '../data/site';
+
+interface Props {
+  heading?: string;
+  intro?: string;
+  /** Show the live Facebook page feed underneath (uses Facebook's page plugin). */
+  showFeed?: boolean;
+}
+const {
+  heading = 'See our latest projects',
+  intro = 'Follow along on our social channels for progress photos from jobs on site right now, from groundworks to the finishing touches.',
+  showFeed = false,
+} = Astro.props;
+const facebook = socials.find((s) => s.key === 'facebook')!;
+---
+
+<section class="social-gateway" id="follow">
+  <h2 class="dash-heading">{heading}</h2>
+  <p>{intro}</p>
+  <div class="social-cards">
+    {socials.map((s) => (
+      <a class:list={['social-card', s.key]} href={s.href} target="_blank" rel="noopener">
+        <Icon name={s.key} size={34} />
+        <strong>{s.label}</strong>
+        <small>{s.handle} · {s.blurb}</small>
+        <span class="follow">Follow →</span>
+      </a>
+    ))}
+  </div>
+  {showFeed && (
+    <div class="fb-embed">
+      <iframe
+        title="AJH Building Contractors on Facebook"
+        src={`https://www.facebook.com/plugins/page.php?href=${encodeURIComponent(facebook.href)}&tabs=timeline&width=500&height=560&small_header=true&adapt_container_width=true&hide_cover=false`}
+        loading="lazy"
+        allow="encrypted-media"
+      ></iframe>
+    </div>
+  )}
+</section>

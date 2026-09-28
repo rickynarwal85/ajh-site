@@ -1,7 +1,10 @@
 ---
 // Small inline SVG icon set (replaces the old theme's icon fonts).
-interface Props { name: 'home' | 'mobile' | 'phone' | 'mail' | 'clock' | 'facebook' | 'twitter' | 'instagram' }
-const { name } = Astro.props;
+interface Props {
+  name: 'home' | 'mobile' | 'phone' | 'mail' | 'clock' | 'facebook' | 'twitter' | 'instagram' | 'whatsapp' | 'quote';
+  size?: number;
+}
+const { name, size = 14 } = Astro.props;
 const paths: Record<Props['name'], string> = {
   home: 'M12 3 2 12h3v8h5v-5h4v5h5v-8h3z',
   mobile: 'M7 2h10a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm0 3v13h10V5zm5 14.2a1 1 0 1 0 0 .01z',
@@ -10,7 +13,9 @@ const paths: Record<Props['name'], string> = {
   clock: 'M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 2a8 8 0 1 1 0 16 8 8 0 0 1 0-16zm-1 3v6l5 3 1-1.6-4-2.4V7z',
   facebook: 'M14 8h3V4h-3a4 4 0 0 0-4 4v2H8v4h2v8h4v-8h3l1-4h-4V8.5a.5.5 0 0 1 .5-.5z',
   twitter: 'M17.8 3h3.1l-6.8 7.7L22 21h-6.2l-4.9-6.4L5.3 21H2.2l7.2-8.3L1.8 3h6.4l4.4 5.8zm-1.1 16.2h1.7L7.4 4.7H5.6z',
+  whatsapp: 'M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 2a8 8 0 1 1-4.1 14.9l-.3-.2-2.9.8.8-2.8-.2-.3A8 8 0 0 1 12 4zM9 7.5c-.3 0-.7.1-1 .5-.3.4-1 1-1 2.5s1 2.9 1.2 3.1c.1.2 2 3.1 4.9 4.3 2.4.9 2.9.8 3.4.7.6-.1 1.8-.7 2-1.4.3-.7.3-1.3.2-1.4l-.6-.4-2-.9c-.3-.1-.5-.1-.7.2l-.9 1.1c-.2.2-.3.2-.6.1a6.6 6.6 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.4 0-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5z',
+  quote: 'M5 3h10l4 4v14H5zm9 1.5V8h3.5zM8 11h8v1.6H8zm0 3.2h8v1.6H8zm0 3.2h5V19H8z',
   instagram: 'M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm0 8.2a3.2 3.2 0 1 1 0-6.4 3.2 3.2 0 0 1 0 6.4zM17.3 5.5a1.2 1.2 0 1 0 0 2.4 1.2 1.2 0 0 0 0-2.4zM16 2H8a6 6 0 0 0-6 6v8a6 6 0 0 0 6 6h8a6 6 0 0 0 6-6V8a6 6 0 0 0-6-6zm4 14a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4V8a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4z',
 };
 ---
-<svg class="icon" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" fill="currentColor" fill-rule="evenodd"><path d={paths[name]} /></svg>
+<svg class="icon" viewBox="0 0 24 24" width={size} height={size} aria-hidden="true" fill="currentColor" fill-rule="evenodd"><path d={paths[name]} /></svg>

@@ -1,0 +1,94 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Icon from '../components/Icon.astro';
+import SocialGateway from '../components/SocialGateway.astro';
+import { site, url } from '../data/site';
+import { expertise } from '../data/expertise';
+
+const { owner } = site;
+---
+
+<Layout
+  title={`Meet ${owner.name}`}
+  description={`${owner.name}, ${owner.role} at ${site.name}. One point of contact from quote to completion, with in-depth knowledge of UK Building Regulations.`}
+>
+  <div class="placeholder">
+    <strong>Draft page.</strong> Text in yellow boxes and anything marked [like this] needs details from Ashley.
+  </div>
+
+  <section class="profile-hero">
+    <div class="profile-photo">
+      [Photo of Ashley on site: a real photo in work gear, not a studio headshot]
+    </div>
+    <div>
+      <h1 class="page-title">Meet {owner.name}</h1>
+      <div class="profile-role">{owner.role}</div>
+      <p class="lead">
+        When you hire AJH, you get Ashley. He prices your job, builds it with his team and runs the project day to day,
+        so the person who made you promises at the quote is the one on site keeping them.
+      </p>
+      <p>
+        [Placeholder: a few lines on Ashley's background. How he got into the trade, when he started AJH,
+        the kind of projects he enjoys most, and what he's proudest of.]
+      </p>
+      <div class="btn-row">
+        <a class="btn btn-whatsapp" href={site.whatsappHref} target="_blank" rel="noopener"><Icon name="whatsapp" size={18} /> WhatsApp Ashley</a>
+        <a class="btn btn-outline" href={site.phoneHref}><Icon name="phone" size={16} /> {site.phone}</a>
+      </div>
+    </div>
+  </section>
+
+  <h2 class="dash-heading">One person, three roles</h2>
+  <div class="hats">
+    <div class="hat">
+      <h4>Owner</h4>
+      <p>Your quote comes straight from the person accountable for it. No sales team, no surprises.</p>
+    </div>
+    <div class="hat">
+      <h4>Head builder</h4>
+      <p>Ashley is hands-on at the build, not managing from an office, so standards stay consistent.</p>
+    </div>
+    <div class="hat">
+      <h4>Project manager</h4>
+      <p>He books the trades, supervises deliveries and handles Building Control, and you have one number to call.</p>
+    </div>
+  </div>
+
+  <h2 class="dash-heading">Knows the “why”, not just the “how”</h2>
+  <p>
+    Any builder can follow a drawing. Ashley knows the UK Building Regulations behind it: why a steel is sized the way
+    it is, why a loft needs a protected escape route, why insulation has to hit a certain level. That means fewer
+    surprises at inspection, and clear answers when you ask “do we really need that?”
+  </p>
+  <div class="placeholder">Draft examples below. Ashley to check wording and add his own.</div>
+  <div class="why-grid">
+    {expertise.map((e) => (
+      <div class="why-card">
+        <h4>{e.title}</h4>
+        <div class="reg">{e.reg}</div>
+        <p>{e.text}</p>
+      </div>
+    ))}
+  </div>
+
+  <blockquote class="pull-quote">
+    “[Placeholder: a line from Ashley in his own words, e.g. why he explains the regs to clients rather than just building to them.]”
+  </blockquote>
+
+  <h2 class="dash-heading">Experience & credentials</h2>
+  <ul class="check-list">
+    <li>Building in and around Hertfordshire since 2000</li>
+    <li>[Placeholder: trade qualifications, e.g. NVQ / CSCS card level]</li>
+    <li>[Placeholder: trade memberships, e.g. FMB, TrustMark]</li>
+    <li>[Placeholder: insurance, e.g. public liability cover amount]</li>
+    <li>[Placeholder: guarantees offered on work]</li>
+  </ul>
+  <p>
+    Want to see his work first? Take a look at <a href={url('/current-projects/')}>current projects</a>. Past clients
+    are also happy to show you their finished builds.
+  </p>
+
+  <hr class="divider" />
+
+  <SocialGateway heading={`Follow ${owner.firstName}'s latest builds`} />
+</Layout>

@@ -1,8 +1,8 @@
 ---
 import '../styles/global.css';
 import Icon from '../components/Icon.astro';
-import { site, mainNav, url } from '../data/site';
-import { sidebarServices } from '../data/services';
+import { site, socials, mainNav, url } from '../data/site';
+import { services, sidebarServices } from '../data/services';
 
 interface Props {
   title?: string;
@@ -15,6 +15,30 @@ const { title, description = site.about, noSidebar = false } = Astro.props;
 const pageTitle = title ? `${title} | ${site.name}` : `${site.name} | Builders in Hitchin, Hertfordshire`;
 const current = Astro.url.pathname;
 const isActive = (href: string) => current === url(href);
+const isServicePage = services.some((s) => isActive(`/${s.slug}/`));
+
+// Tells Google who the business is, where it is and how to contact it (local search).
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'GeneralContractor',
+  name: site.name,
+  url: Astro.site ? new URL(url('/'), Astro.site).href : undefined,
+  logo: Astro.site ? new URL(url('/images/logo.jpg'), Astro.site).href : undefined,
+  telephone: '+441462612168',
+  email: site.email,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: '4 Coppice Mead',
+    addressLocality: 'Hitchin',
+    addressRegion: 'Hertfordshire',
+    postalCode: 'SG5 4JX',
+    addressCountry: 'GB',
+  },
+  areaServed: 'Hertfordshire',
+  founder: { '@type': 'Person', name: site.owner.name, jobTitle: site.owner.role },
+  openingHours: 'Mo-Fr 08:00-17:00',
+  sameAs: socials.map((s) => s.href),
+};
 ---
 
 <!doctype html>
@@ -24,6 +48,7 @@ const isActive = (href: string) => current === url(href);
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
+    <meta name="theme-color" content="#263997" />
     <link rel="icon" type="image/svg+xml" href={url('/favicon.svg')} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -31,37 +56,58 @@ const isActive = (href: string) => current === url(href);
       href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&family=Raleway:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap"
       rel="stylesheet"
     />
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
   </head>
   <body>
-    <header class="site-header">
-      <div class="top-bar">
-        <div class="container top-bar-inner">
-          <div class="top-left">
-            <span class="top-item"><Icon name="home" />{site.tagline}</span>
-            <a class="top-item" href={site.mobileHref}><Icon name="mobile" />{site.mobile}</a>
-          </div>
-          <div class="top-right">
-            <a class="top-item" href={site.phoneHref}><Icon name="phone" />{site.phone}</a>
-            <a class="top-item hide-sm" href={`mailto:${site.email}`}><Icon name="mail" />{site.email}</a>
-            <span class="top-item hide-sm"><Icon name="clock" /><strong>{site.hoursShort}</strong></span>
-            <a class="social" href={site.social.facebook} aria-label="Facebook"><Icon name="facebook" /></a>
-            <a class="social" href={site.social.twitter} aria-label="Twitter / X"><Icon name="twitter" /></a>
-            <a class="social" href={site.social.instagram} aria-label="Instagram"><Icon name="instagram" /></a>
-          </div>
+    <div class="top-bar">
+      <div class="container top-bar-inner">
+        <div class="top-left">
+          <span class="top-item"><Icon name="home" />{site.tagline}</span>
+          <a class="top-item" href={site.whatsappHref} target="_blank" rel="noopener"><Icon name="whatsapp" />{site.mobile}</a>
+        </div>
+        <div class="top-right">
+          <a class="top-item" href={site.phoneHref}><Icon name="phone" />{site.phone}</a>
+          <a class="top-item" href={`mailto:${site.email}`}><Icon name="mail" />{site.email}</a>
+          <span class="top-item"><Icon name="clock" /><strong>{site.hoursShort}</strong></span>
+          {socials.map((s) => (
+            <a class="social" href={s.href} target="_blank" rel="noopener" aria-label={s.label}><Icon name={s.key} /></a>
+          ))}
         </div>
       </div>
-      <div class="menu-holder">
-        <div class="container menu-inner">
-          <a href={url('/')} class="logo"><img src={url('/images/logo.jpg')} alt="AJH Building Contractors" width="188" height="64" /></a>
-          <button class="menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="main-nav"><span></span></button>
-          <nav id="main-nav" class="main-nav">
-            <ul>
-              {mainNav.map((item) => (
+    </div>
+
+    <header class="site-header">
+      <div class="container menu-inner">
+        <a href={url('/')} class="logo"><img src={url('/images/logo.jpg')} alt="AJH Building Contractors" width="188" height="64" /></a>
+        <nav id="main-nav" class="main-nav" aria-label="Main">
+          <ul>
+            {mainNav.map((item) =>
+              item.services ? (
+                <li class="has-sub">
+                  <a href={url(item.href)} class:list={{ active: isServicePage }} aria-haspopup="true">{item.label}</a>
+                  <ul class="sub-menu">
+                    {sidebarServices.map((s) => (
+                      <li><a href={url(`/${s.slug}/`)} class:list={{ active: isActive(`/${s.slug}/`) }}>{s.name}</a></li>
+                    ))}
+                  </ul>
+                </li>
+              ) : (
                 <li><a href={url(item.href)} class:list={{ active: isActive(item.href) }}>{item.label}</a></li>
+              )
+            )}
+          </ul>
+          <div class="nav-mobile-extra">
+            <a href={site.phoneHref}><Icon name="phone" /> {site.phone}</a>
+            <a href={`mailto:${site.email}`}><Icon name="mail" /> {site.email}</a>
+            <div class="nav-social">
+              {socials.map((s) => (
+                <a class="social" href={s.href} target="_blank" rel="noopener" aria-label={s.label}><Icon name={s.key} size={16} /></a>
               ))}
-            </ul>
-          </nav>
-        </div>
+            </div>
+          </div>
+        </nav>
+        <a href={url('/contactus/#quote')} class="btn header-cta">Free Quote</a>
+        <button class="menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="main-nav"><span></span></button>
       </div>
     </header>
 
@@ -79,6 +125,12 @@ const isActive = (href: string) => current === url(href);
               ))}
             </ul>
           </div>
+          <div class="widget sidebar-cta">
+            <h4><span>Talk to Ashley</span></h4>
+            <p>Questions about your project, planning or building regs? Message Ashley directly.</p>
+            <a class="btn btn-whatsapp btn-block" href={site.whatsappHref} target="_blank" rel="noopener"><Icon name="whatsapp" size={18} /> WhatsApp</a>
+            <a class="btn btn-block" href={site.phoneHref}><Icon name="phone" size={16} /> {site.phone}</a>
+          </div>
         </aside>
       )}
     </div>
@@ -88,11 +140,16 @@ const isActive = (href: string) => current === url(href);
         <div class="widget">
           <h4><span>About Us</span></h4>
           <p>{site.about}</p>
+          <div class="footer-social">
+            {socials.map((s) => (
+              <a class="social" href={s.href} target="_blank" rel="noopener" aria-label={s.label}><Icon name={s.key} size={16} /></a>
+            ))}
+          </div>
         </div>
         <div class="widget">
           <h4><span>Useful Links</span></h4>
           <ul class="footer-links">
-            {mainNav.map((item) => <li><a href={url(item.href)}>{item.label}</a></li>)}
+            {mainNav.filter((i) => !i.services).map((item) => <li><a href={url(item.href)}>{item.label}</a></li>)}
           </ul>
         </div>
         <div class="widget">
@@ -101,7 +158,7 @@ const isActive = (href: string) => current === url(href);
           <p>
             <strong>Phone</strong><br />
             <a href={site.phoneHref}>{site.phone}</a><br />
-            <a href={site.mobileHref}>{site.mobile}</a>
+            <a href={site.whatsappHref} target="_blank" rel="noopener">{site.mobile} (WhatsApp)</a>
           </p>
           <p><strong>Email</strong><br /><a href={`mailto:${site.email}`}>{site.email}</a></p>
           <p><strong>Working hours</strong><br />{site.hours}</p>
@@ -115,12 +172,20 @@ const isActive = (href: string) => current === url(href);
       </div>
     </footer>
 
+    <!-- Phone-only action bar: the three things a visitor on a phone actually wants to do. -->
+    <nav class="mobile-actions" aria-label="Quick contact">
+      <a href={site.phoneHref}><Icon name="phone" size={20} /><span>Call</span></a>
+      <a href={site.whatsappHref} target="_blank" rel="noopener" class="wa"><Icon name="whatsapp" size={20} /><span>WhatsApp</span></a>
+      <a href={url('/contactus/#quote')} class="quote"><Icon name="quote" size={20} /><span>Free Quote</span></a>
+    </nav>
+
     <script>
       const toggle = document.querySelector<HTMLButtonElement>('.menu-toggle');
       const nav = document.getElementById('main-nav');
       toggle?.addEventListener('click', () => {
         const open = nav?.classList.toggle('open') ?? false;
         toggle.setAttribute('aria-expanded', String(open));
+        document.body.classList.toggle('nav-open', open);
       });
     </script>
   </body>

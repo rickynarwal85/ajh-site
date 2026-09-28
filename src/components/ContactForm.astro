@@ -1,22 +1,36 @@
 ---
 // Placeholder form: GitHub Pages can't process submissions, so this isn't wired up yet.
 // To make it live, point `action` at a form service (e.g. Web3Forms / Formspree) and remove the preview script.
+import Icon from './Icon.astro';
 import { site } from '../data/site';
+import { services } from '../data/services';
 
 interface Props { heading?: string }
-const { heading = 'Contact Us' } = Astro.props;
+const { heading = 'Get a free, no-obligation quote' } = Astro.props;
 ---
 
-<section class="contact-section">
+<section class="contact-section" id="quote">
   <h3>{heading}</h3>
+  <p class="form-alt">
+    Prefer to chat? <a href={site.whatsappHref} target="_blank" rel="noopener"><Icon name="whatsapp" /> WhatsApp Ashley</a>
+    or call <a href={site.phoneHref}>{site.phone}</a>.
+  </p>
   <form class="contact-form" data-preview-form>
-    <label>Your Name (required)<input type="text" name="name" required /></label>
-    <label>Your Email (required)<input type="email" name="email" required /></label>
-    <label>Subject (required)<input type="text" name="subject" required /></label>
-    <label>Your Message (required)<textarea name="message" rows="7" required></textarea></label>
-    <div><button type="submit" class="btn">Send</button></div>
-    <p class="form-status" role="status" hidden>
-      Thanks! This is a preview site, so the form isn't connected yet. Please call {site.phone} or email {site.email}.
+    <label>Your name *<input type="text" name="name" autocomplete="name" required /></label>
+    <label>Phone *<input type="tel" name="phone" autocomplete="tel" inputmode="tel" required /></label>
+    <label>Email *<input type="email" name="email" autocomplete="email" required /></label>
+    <label>Postcode<input type="text" name="postcode" autocomplete="postal-code" /></label>
+    <label class="full">What's the project?
+      <select name="project">
+        <option value="">Choose one…</option>
+        {services.map((s) => <option>{s.name}</option>)}
+        <option>Something else</option>
+      </select>
+    </label>
+    <label class="full">Tell us a bit about it *<textarea name="message" rows="5" required></textarea></label>
+    <div class="full"><button type="submit" class="btn">Request my free quote</button></div>
+    <p class="form-status full" role="status" hidden>
+      Thanks! This is a preview site, so the form isn't connected yet. Please WhatsApp or call {site.phone}.
     </p>
   </form>
 </section>

@@ -2,8 +2,11 @@
 import Layout from '../layouts/Layout.astro';
 import Slider from '../components/Slider.astro';
 import ContactForm from '../components/ContactForm.astro';
-import { url } from '../data/site';
-import { services } from '../data/services';
+import SocialGateway from '../components/SocialGateway.astro';
+import Icon from '../components/Icon.astro';
+import { site, url } from '../data/site';
+import { services, sidebarServices } from '../data/services';
+import { expertise } from '../data/expertise';
 
 const slides = services.map((s) => ({ title: s.name, image: s.slideImage, href: `/${s.slug}/` }));
 
@@ -38,10 +41,63 @@ const stages = [
 <Layout>
   <Slider slides={slides} />
 
+  <div class="cta-strip">
+    <p>Free, no-obligation quotes across Hertfordshire</p>
+    <div class="btn-row">
+      <a class="btn" href={url('/contactus/#quote')}>Get a quote</a>
+      <a class="btn btn-whatsapp" href={site.whatsappHref} target="_blank" rel="noopener"><Icon name="whatsapp" size={18} /> WhatsApp</a>
+    </div>
+  </div>
+
   <section style="margin-top:40px">
     <h1 class="page-title">Welcome to AJH Building Contractors Ltd</h1>
     <h3>Here at AJH Building Contractors Ltd, we have been designing and constructing quality builds in and around Hertfordshire for over 20 years.</h3>
     <p>With our specialist knowledge in building, construction, experience and passion for what we do, whether it be an extension, complete renovation to a new build, we can help you realise your dream of the perfect living space for you and your family.</p>
+  </section>
+
+  <section id="services" style="margin-top:30px">
+    <h2 class="dash-heading">What we do</h2>
+    <div class="service-grid">
+      {sidebarServices.map((s) => (
+        <a class="service-card" href={url(`/${s.slug}/`)}>
+          <img src={url(s.slideImage)} alt="" loading="lazy" />
+          <span>{s.name}</span>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <section>
+    <h2 class="dash-heading">We know the “why”, not just the “how”</h2>
+    <p>
+      Every job we take on is built to UK Building Regulations, and we'll explain what they mean for your project.
+      You'll know why each step is needed before you pay for it, and there are no nasty surprises at inspection.
+    </p>
+    <div class="why-grid">
+      {expertise.map((e) => (
+        <div class="why-card">
+          <h4>{e.title}</h4>
+          <div class="reg">{e.reg}</div>
+          <p>{e.text}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <section class="two-col">
+    <div class="profile-photo" style="aspect-ratio:4/3">[Photo of Ashley on site]</div>
+    <div>
+      <h2 class="dash-heading">Meet Ashley</h2>
+      <p class="lead">
+        {site.owner.name} is AJH's owner, head builder and project manager. He quotes your job, builds it and runs it,
+        so you deal with one person from first visit to final handover.
+      </p>
+      <a class="btn btn-outline" href={url('/meet-ashley/')}>Meet Ashley</a>
+    </div>
   </section>
 
   <hr class="divider" />
@@ -76,6 +132,10 @@ const stages = [
       </div>
     ))}
   </section>
+
+  <hr class="divider" />
+
+  <SocialGateway />
 
   <ContactForm />
 </Layout>

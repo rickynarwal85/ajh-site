@@ -1,7 +1,8 @@
 ---
+import fs from 'node:fs';
 import Layout from '../layouts/Layout.astro';
 import ContactForm from '../components/ContactForm.astro';
-import fs from 'node:fs';
+import SocialGateway from '../components/SocialGateway.astro';
 import { url } from '../data/site';
 
 // Photos live in public/images/projects/<folder>/. Drop new images into a folder and they appear here automatically.
@@ -22,20 +23,69 @@ const categories = [
 
 <Layout title="Current Projects">
   <h1 class="page-title dash-heading">Current Projects</h1>
-  <img class="hero-img" src={url('/images/projects-hero.jpg')} alt="Construction in progress" />
+  <p class="lead">
+    A selection of recent work. For the very latest, see what's on site this week on our
+    <a href="#follow">social channels</a>.
+  </p>
 
   {categories.map((c) => (
     <section>
       <h3>{c.title}</h3>
       <div class="gallery">
         {c.images.map((src, i) => (
-          <a href={url(src)} target="_blank" rel="noopener">
+          <button type="button" data-full={url(src)} aria-label={`Enlarge ${c.title} photo ${i + 1}`}>
             <img src={url(src)} alt={`${c.title} project photo ${i + 1}`} loading="lazy" />
-          </a>
+          </button>
         ))}
       </div>
     </section>
   ))}
 
+  <hr class="divider" />
+  <SocialGateway showFeed />
+
   <ContactForm />
+
+  <dialog class="lightbox" aria-label="Photo viewer">
+    <div class="lightbox-inner">
+      <img alt="" />
+      <button class="lb-close" aria-label="Close">×</button>
+      <button class="lb-prev" aria-label="Previous photo">‹</button>
+      <button class="lb-next" aria-label="Next photo">›</button>
+      <div class="lb-count"></div>
+    </div>
+  </dialog>
 </Layout>
+
+<script>
+  const dialog = document.querySelector<HTMLDialogElement>('.lightbox')!;
+  const img = dialog.querySelector('img')!;
+  const count = dialog.querySelector<HTMLElement>('.lb-count')!;
+  const thumbs = [...document.querySelectorAll<HTMLButtonElement>('.gallery button')];
+  let index = 0;
+
+  const show = (i: number) => {
+    index = (i + thumbs.length) % thumbs.length;
+    img.src = thumbs[index].dataset.full!;
+    img.alt = thumbs[index].querySelector('img')!.alt;
+    count.textContent = `${index + 1} / ${thumbs.length}`;
+  };
+
+  thumbs.forEach((t, i) => t.addEventListener('click', () => { show(i); dialog.showModal(); }));
+  dialog.querySelector('.lb-close')!.addEventListener('click', () => dialog.close());
+  dialog.querySelector('.lb-prev')!.addEventListener('click', () => show(index - 1));
+  dialog.querySelector('.lb-next')!.addEventListener('click', () => show(index + 1));
+  // Click outside the photo closes; arrow keys navigate.
+  dialog.addEventListener('click', (e) => { if (e.target === dialog || e.target === dialog.firstElementChild) dialog.close(); });
+  dialog.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') show(index - 1);
+    if (e.key === 'ArrowRight') show(index + 1);
+  });
+  // Swipe on phones.
+  let startX = 0;
+  dialog.addEventListener('touchstart', (e) => { startX = e.touches[0].clientX; }, { passive: true });
+  dialog.addEventListener('touchend', (e) => {
+    const dx = e.changedTouches[0].clientX - startX;
+    if (Math.abs(dx) > 50) show(index + (dx < 0 ? 1 : -1));
+  });
+</script>
