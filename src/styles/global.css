@@ -97,8 +97,8 @@ a.top-item:hover { color: #fff; }
 /* ---------- Header / nav ---------- */
 .site-header { position: sticky; top: 0; z-index: 50; background: #fff; box-shadow: 0 2px 14px rgba(20,31,85,.08); }
 .menu-inner { display: flex; align-items: center; gap: 16px; min-height: 84px; }
-.logo { margin-right: auto; color: var(--accent); display: block; }
-.logo-svg { display: block; height: 56px; width: auto; }
+.logo { margin-right: auto; display: block; }
+.logo-img { display: block; height: 60px; width: auto; }
 .main-nav > ul { list-style: none; margin: 0; padding: 0; display: flex; }
 .main-nav a {
   display: block; padding: 31px 13px;
@@ -322,7 +322,8 @@ a.trust-item:hover { background: var(--surface-alt); color: var(--text); }
 .site-footer h4 { color: #fff; font-size: 16px; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 16px; }
 .site-footer a { color: #dfe4f5; }
 .site-footer a:hover { color: #fff; }
-.logo-footer { color: #fff; height: 54px; width: auto; margin-bottom: 18px; }
+.logo-footer { display: inline-block; background: #fff; padding: 8px 12px; border-radius: var(--radius); margin-bottom: 18px; }
+.logo-footer img { height: 46px; width: auto; }
 .footer-about p { font-size: 14px; }
 .footer-links { list-style: none; margin: 0; padding: 0; }
 .footer-links li { padding: 3px 0; }
@@ -341,7 +342,7 @@ a.trust-item:hover { background: var(--surface-alt); color: var(--text); }
 /* ---------- Responsive ---------- */
 @media (max-width: 1150px) {
   .main-nav a { padding-inline: 9px; font-size: 14px; }
-  .logo-svg { height: 48px; }
+  .logo-img { height: 52px; }
 }
 
 @media (max-width: 1000px) {
@@ -365,7 +366,7 @@ a.trust-item:hover { background: var(--surface-alt); color: var(--text); }
   /* Everything in the top bar lives in the menu and bottom bar on phones. */
   .top-bar { display: none; }
   .menu-inner { min-height: 64px; gap: 8px; }
-  .logo-svg { height: 40px; }
+  .logo-img { height: 44px; }
   .header-cta { padding: 8px 14px; font-size: 14px; min-height: 40px; }
 
   .menu-toggle {

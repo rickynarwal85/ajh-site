@@ -1,7 +1,6 @@
 ---
 import '../styles/global.css';
 import Icon from '../components/Icon.astro';
-import Logo from '../components/Logo.astro';
 import CtaBand from '../components/CtaBand.astro';
 import { site, socials, mainNav, url } from '../data/site';
 import { services, sidebarServices } from '../data/services';
@@ -93,7 +92,7 @@ const schema = {
 
     <header class="site-header">
       <div class="container menu-inner">
-        <a href={url('/')} class="logo" aria-label="AJH Building Contractors home"><Logo /></a>
+        <a href={url('/')} class="logo"><img class="logo-img" src={url('/images/logo.jpg')} alt="AJH Building Contractors Ltd" width="384" height="131" /></a>
         <nav id="main-nav" class="main-nav" aria-label="Main">
           <ul>
             {mainNav.map((item) =>
@@ -135,7 +134,7 @@ const schema = {
     <footer class="site-footer">
       <div class="container footer-grid">
         <div class="footer-about">
-          <Logo class="logo-footer" />
+          <span class="logo-footer"><img src={url('/images/logo.jpg')} alt="AJH Building Contractors Ltd" width="384" height="131" loading="lazy" /></span>
           <p>{site.about}</p>
           <div class="footer-social">
             {socials.map((s) => (
