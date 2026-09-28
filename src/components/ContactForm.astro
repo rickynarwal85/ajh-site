@@ -1,0 +1,35 @@
+---
+// Placeholder form: GitHub Pages can't process submissions, so this isn't wired up yet.
+// To make it live, point `action` at a form service (e.g. Web3Forms / Formspree) and remove the preview script.
+import { site } from '../data/site';
+
+interface Props { heading?: string }
+const { heading = 'Contact Us' } = Astro.props;
+---
+
+<section class="contact-section">
+  <h3>{heading}</h3>
+  <form class="contact-form" data-preview-form>
+    <label>Your Name (required)<input type="text" name="name" required /></label>
+    <label>Your Email (required)<input type="email" name="email" required /></label>
+    <label>Subject (required)<input type="text" name="subject" required /></label>
+    <label>Your Message (required)<textarea name="message" rows="7" required></textarea></label>
+    <div><button type="submit" class="btn">Send</button></div>
+    <p class="form-status" role="status" hidden>
+      Thanks! This is a preview site, so the form isn't connected yet. Please call {site.phone} or email {site.email}.
+    </p>
+  </form>
+</section>
+
+<style>
+  .contact-section { margin-top: 40px; }
+</style>
+
+<script>
+  for (const form of document.querySelectorAll<HTMLFormElement>('[data-preview-form]')) {
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      form.querySelector<HTMLElement>('.form-status')!.hidden = false;
+    });
+  }
+</script>

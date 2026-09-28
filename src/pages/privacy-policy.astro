@@ -1,0 +1,24 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { site } from '../data/site';
+---
+
+<Layout title="Privacy Policy">
+  <h1 class="page-title dash-heading">Privacy Policy</h1>
+  <p><em>Placeholder: the policy on the current site is the WordPress default and should be replaced with one written for AJH.</em></p>
+
+  <h3>Who we are</h3>
+  <p>{site.name}, {site.address}. Contact: <a href={`mailto:${site.email}`}>{site.email}</a>.</p>
+
+  <h3>What personal data we collect and why</h3>
+  <p>If you contact us using the form on this website, by email or by phone, we collect the details you give us (such as your name, email address and message) so that we can reply to your enquiry and provide a quotation.</p>
+
+  <h3>Embedded content from other websites</h3>
+  <p>Pages on this site may include content from other websites (for example fonts or maps). These websites may collect data about you in the same way as if you had visited them directly.</p>
+
+  <h3>How long we retain your data</h3>
+  <p>We keep enquiry details only for as long as needed to respond to you and, if you become a customer, for as long as required for our business records.</p>
+
+  <h3>What rights you have over your data</h3>
+  <p>You can ask us for a copy of the personal data we hold about you, or ask us to erase it, by emailing <a href={`mailto:${site.email}`}>{site.email}</a>. This does not include data we are obliged to keep for administrative, legal or security purposes.</p>
+</Layout>

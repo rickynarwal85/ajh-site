@@ -1,0 +1,127 @@
+---
+import '../styles/global.css';
+import Icon from '../components/Icon.astro';
+import { site, mainNav, url } from '../data/site';
+import { sidebarServices } from '../data/services';
+
+interface Props {
+  title?: string;
+  description?: string;
+  /** Hide the "What we do" sidebar (e.g. for wide pages). */
+  noSidebar?: boolean;
+}
+
+const { title, description = site.about, noSidebar = false } = Astro.props;
+const pageTitle = title ? `${title} | ${site.name}` : `${site.name} | Builders in Hitchin, Hertfordshire`;
+const current = Astro.url.pathname;
+const isActive = (href: string) => current === url(href);
+---
+
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href={url('/favicon.svg')} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&family=Raleway:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="top-bar">
+        <div class="container top-bar-inner">
+          <div class="top-left">
+            <span class="top-item"><Icon name="home" />{site.tagline}</span>
+            <a class="top-item" href={site.mobileHref}><Icon name="mobile" />{site.mobile}</a>
+          </div>
+          <div class="top-right">
+            <a class="top-item" href={site.phoneHref}><Icon name="phone" />{site.phone}</a>
+            <a class="top-item hide-sm" href={`mailto:${site.email}`}><Icon name="mail" />{site.email}</a>
+            <span class="top-item hide-sm"><Icon name="clock" /><strong>{site.hoursShort}</strong></span>
+            <a class="social" href={site.social.facebook} aria-label="Facebook"><Icon name="facebook" /></a>
+            <a class="social" href={site.social.twitter} aria-label="Twitter / X"><Icon name="twitter" /></a>
+            <a class="social" href={site.social.instagram} aria-label="Instagram"><Icon name="instagram" /></a>
+          </div>
+        </div>
+      </div>
+      <div class="menu-holder">
+        <div class="container menu-inner">
+          <a href={url('/')} class="logo"><img src={url('/images/logo.jpg')} alt="AJH Building Contractors" width="188" height="64" /></a>
+          <button class="menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="main-nav"><span></span></button>
+          <nav id="main-nav" class="main-nav">
+            <ul>
+              {mainNav.map((item) => (
+                <li><a href={url(item.href)} class:list={{ active: isActive(item.href) }}>{item.label}</a></li>
+              ))}
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <div class:list={['container content-wrap', { 'no-sidebar': noSidebar }]}>
+      <main class="content">
+        <slot />
+      </main>
+      {!noSidebar && (
+        <aside class="sidebar">
+          <div class="widget">
+            <h4><span>What we do</span></h4>
+            <ul class="page-list">
+              {sidebarServices.map((s) => (
+                <li><a href={url(`/${s.slug}/`)} class:list={{ active: isActive(`/${s.slug}/`) }}>{s.name}</a></li>
+              ))}
+            </ul>
+          </div>
+        </aside>
+      )}
+    </div>
+
+    <section class="footer-widgets">
+      <div class="container footer-grid">
+        <div class="widget">
+          <h4><span>About Us</span></h4>
+          <p>{site.about}</p>
+        </div>
+        <div class="widget">
+          <h4><span>Useful Links</span></h4>
+          <ul class="footer-links">
+            {mainNav.map((item) => <li><a href={url(item.href)}>{item.label}</a></li>)}
+          </ul>
+        </div>
+        <div class="widget">
+          <h4><span>Contact Us</span></h4>
+          <p><strong>Address</strong><br />{site.address}</p>
+          <p>
+            <strong>Phone</strong><br />
+            <a href={site.phoneHref}>{site.phone}</a><br />
+            <a href={site.mobileHref}>{site.mobile}</a>
+          </p>
+          <p><strong>Email</strong><br /><a href={`mailto:${site.email}`}>{site.email}</a></p>
+          <p><strong>Working hours</strong><br />{site.hours}</p>
+        </div>
+      </div>
+    </section>
+    <footer class="site-footer">
+      <div class="container footer-bottom">
+        <p>© {new Date().getFullYear()} {site.name}. All Rights Reserved.</p>
+        <a href={url('/privacy-policy/')}>Privacy Policy</a>
+      </div>
+    </footer>
+
+    <script>
+      const toggle = document.querySelector<HTMLButtonElement>('.menu-toggle');
+      const nav = document.getElementById('main-nav');
+      toggle?.addEventListener('click', () => {
+        const open = nav?.classList.toggle('open') ?? false;
+        toggle.setAttribute('aria-expanded', String(open));
+      });
+    </script>
+  </body>
+</html>

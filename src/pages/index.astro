@@ -1,0 +1,81 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Slider from '../components/Slider.astro';
+import ContactForm from '../components/ContactForm.astro';
+import { url } from '../data/site';
+import { services } from '../data/services';
+
+const slides = services.map((s) => ({ title: s.name, image: s.slideImage, href: `/${s.slug}/` }));
+
+const stages = [
+  {
+    title: 'Free Quotation',
+    subtitle: 'Stage One',
+    image: '/images/stage-quotation.jpg',
+    text: 'In the first instance we would meet with you to get to know each other, discuss your project and go through any concerns you may have. Providing you are happy to commence, and you feel we are the right contractor to continue with the quotation we will look at your drawings or you can use our preferred architect. Having discussed the required work, I will then provide a free no obligation quote for the works discussed. Once the quotation has been accepted a payment schedule will be issued.',
+  },
+  {
+    title: 'Preparation',
+    subtitle: 'Stage Two',
+    image: '/images/stage-preparation.jpg',
+    text: 'Once our quotation has been accepted and we have agreed on a start date, we will prepare the site and provide fencing for security where required. Noise and disruption will be kept to a minimum. The site will then be setup in preparation for the start date.',
+  },
+  {
+    title: 'Construction',
+    subtitle: 'Stage Three',
+    image: '/images/stage-construction.jpg',
+    text: 'We will arrive on the first day, setting the standard for the project. Throughout the project our team will work with total professionalism and will always be courteous and polite to you the client, neighbours and visitors. We always ensure we keep the site tidy and minimise the disruption as much as possible. We will supervise all deliveries and will arrange for all the required trades.',
+  },
+  {
+    title: 'Completion',
+    subtitle: 'Final Stage',
+    image: '/images/stage-completion.jpg',
+    text: 'Once the construction is complete, we will meet with you to ensure you are happy with the final result. Any remaining issues will be dealt with professionally without any problem.',
+  },
+];
+---
+
+<Layout>
+  <Slider slides={slides} />
+
+  <section style="margin-top:40px">
+    <h1 class="page-title">Welcome to AJH Building Contractors Ltd</h1>
+    <h3>Here at AJH Building Contractors Ltd, we have been designing and constructing quality builds in and around Hertfordshire for over 20 years.</h3>
+    <p>With our specialist knowledge in building, construction, experience and passion for what we do, whether it be an extension, complete renovation to a new build, we can help you realise your dream of the perfect living space for you and your family.</p>
+  </section>
+
+  <hr class="divider" />
+
+  <section class="two-col">
+    <div>
+      <h2 class="dash-heading"><a href={url('/newbuilds/')} style="color:inherit">New builds</a></h2>
+      <p>Are you planning to build your dream home? Make sure you are working alongside a highly skilled and experienced building contractor in order to make it a success. When you choose us, you will benefit from a professional service that includes everything from groundwork to decoration. We pride ourselves on providing high standard workmanship and outstanding customer service.</p>
+    </div>
+    <img class="feature-img" src={url('/images/home-new-builds.jpg')} alt="New build house under construction" loading="lazy" />
+  </section>
+
+  <hr class="divider" />
+
+  <section class="two-col">
+    <img class="feature-img" src={url('/images/home-loft-bedroom.jpg')} alt="Loft conversion bedroom" loading="lazy" />
+    <div class="order-first-sm">
+      <h2 class="dash-heading"><a href={url('/loftconversion/')} style="color:inherit">Loft Conversions</a></h2>
+      <p>For quality attic and loft conversions in the Hertfordshire area, look no further than AJH. With a team of experts on hand to take projects through from design to completion, all work involved in your conversion is carried out by us. From electrical work to plumbing, our team work tirelessly to create an elegant and functional space that will add value to your property. Working on all manner of projects, from bedroom and bathroom projects to office conversions Here at AJH our team use only the highest quality tools and materials to guarantee a conversion you will be proud of.</p>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <section class="stages">
+    {stages.map((s) => (
+      <div class="stage">
+        <h3>{s.title}</h3>
+        <div class="subtitle">{s.subtitle}</div>
+        <img src={url(s.image)} alt={s.title} loading="lazy" />
+        <p>{s.text}</p>
+      </div>
+    ))}
+  </section>
+
+  <ContactForm />
+</Layout>

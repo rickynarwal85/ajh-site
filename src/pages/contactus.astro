@@ -1,0 +1,21 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ContactForm from '../components/ContactForm.astro';
+import { site } from '../data/site';
+---
+
+<Layout title="Contact us">
+  <h1 class="page-title dash-heading">Contact us</h1>
+  <h3>Contact us anytime</h3>
+  <p>By email, by phone or simply drop by us anytime you want.</p>
+
+  <div class="contact-grid">
+    <div><h4>Address</h4><p>{site.address}</p></div>
+    <div><h4>Phone</h4><p><a href={site.phoneHref}>{site.phone}</a></p></div>
+    <div><h4>Mobile</h4><p><a href={site.mobileHref}>{site.mobile}</a></p></div>
+    <div><h4>Email</h4><p><a href={`mailto:${site.email}`}>{site.email}</a></p></div>
+    <div><h4>Working hours</h4><p>{site.hours}</p></div>
+  </div>
+
+  <ContactForm heading="Drop us an email" />
+</Layout>

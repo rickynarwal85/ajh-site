@@ -1,0 +1,41 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ContactForm from '../components/ContactForm.astro';
+import fs from 'node:fs';
+import { url } from '../data/site';
+
+// Photos live in public/images/projects/<folder>/. Drop new images into a folder and they appear here automatically.
+const categories = [
+  { folder: 'new-builds', title: 'New Builds' },
+  { folder: 'loft-conversion', title: 'Loft Conversion' },
+  { folder: 'garage-conversion', title: 'Garage Conversion' },
+  { folder: 'extensions', title: 'Extensions' },
+].map((c) => ({
+  ...c,
+  images: fs
+    .readdirSync(`public/images/projects/${c.folder}`)
+    .filter((f) => /\.(jpe?g|png|webp)$/i.test(f))
+    .sort()
+    .map((f) => `/images/projects/${c.folder}/${f}`),
+}));
+---
+
+<Layout title="Current Projects">
+  <h1 class="page-title dash-heading">Current Projects</h1>
+  <img class="hero-img" src={url('/images/projects-hero.jpg')} alt="Construction in progress" />
+
+  {categories.map((c) => (
+    <section>
+      <h3>{c.title}</h3>
+      <div class="gallery">
+        {c.images.map((src, i) => (
+          <a href={url(src)} target="_blank" rel="noopener">
+            <img src={url(src)} alt={`${c.title} project photo ${i + 1}`} loading="lazy" />
+          </a>
+        ))}
+      </div>
+    </section>
+  ))}
+
+  <ContactForm />
+</Layout>
