@@ -1,8 +1,10 @@
 name: Deploy to GitHub Pages
 
+# Publishes main at /ajh-site/ and, if it exists, the `refresh` branch at /ajh-site/refresh/
+# so the redesign can be compared side by side with the current version.
 on:
   push:
-    branches: [main]
+    branches: [main, refresh]
   workflow_dispatch:
 
 permissions:
@@ -19,7 +21,36 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: withastro/action@v4
+        with:
+          ref: main
+          path: main
+      - name: Check for refresh branch
+        id: refresh
+        run: |
+          if git ls-remote --exit-code --heads "https://github.com/${{ github.repository }}" refresh > /dev/null; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          fi
+      - uses: actions/checkout@v4
+        if: steps.refresh.outputs.exists == 'true'
+        with:
+          ref: refresh
+          path: refresh
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Build main
+        working-directory: main
+        run: npm ci && npm run build
+      - name: Build refresh preview
+        if: steps.refresh.outputs.exists == 'true'
+        working-directory: refresh
+        env:
+          BASE_PATH: /ajh-site/refresh
+          PUBLIC_PREVIEW: refresh
+        run: npm ci && npm run build && cp -r dist ../main/dist/refresh
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: main/dist
 
   deploy:
     needs: build
