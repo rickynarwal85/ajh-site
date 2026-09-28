@@ -1,0 +1,30 @@
+---
+// Customer reviews, pointing to the Google Business Profile.
+// Replace the placeholder quotes with real reviews copied (with permission) from Google.
+import Icon from './Icon.astro';
+import { site } from '../data/site';
+
+const reviews = [
+  { text: '[Placeholder: paste a real Google review here, ideally one that mentions an extension or loft conversion.]', name: '[Customer name]', job: '[Project, town]' },
+  { text: '[Placeholder: a review that mentions Ashley explaining things clearly or handling building control.]', name: '[Customer name]', job: '[Project, town]' },
+  { text: '[Placeholder: a review about tidiness, communication or finishing on time.]', name: '[Customer name]', job: '[Project, town]' },
+];
+---
+
+<section class="reviews">
+  <h2 class="dash-heading">What our customers say</h2>
+  <div class="review-grid">
+    {reviews.map((r) => (
+      <figure class="review-card">
+        <div class="stars" aria-label="5 out of 5 stars">
+          {[1, 2, 3, 4, 5].map(() => <Icon name="star" size={16} />)}
+        </div>
+        <blockquote>{r.text}</blockquote>
+        <figcaption><strong>{r.name}</strong><span>{r.job}</span></figcaption>
+      </figure>
+    ))}
+  </div>
+  <div class="btn-row" style="margin-top:18px">
+    <a class="btn btn-google" href={site.google} target="_blank" rel="noopener"><Icon name="google" size={18} /> Read our reviews on Google</a>
+  </div>
+</section>

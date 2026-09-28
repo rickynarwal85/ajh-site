@@ -398,3 +398,14 @@ hr.divider { border: 0; border-top: 1px solid var(--line); margin: 40px 0; }
 @media (max-width: 420px) {
   .why-grid { grid-template-columns: 1fr; }
 }
+
+/* ---------- Reviews ---------- */
+.review-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 16px; }
+.review-card { margin: 0; padding: 18px; background: #fafafa; border: 1px solid #eee; display: flex; flex-direction: column; gap: 10px; }
+.review-card .stars { color: #f5b301; display: flex; gap: 2px; }
+.review-card blockquote { margin: 0; font-style: italic; font-size: 14px; flex: 1; }
+.review-card figcaption { font-size: 13px; display: grid; }
+.review-card figcaption span { color: var(--muted); }
+.btn-google { background: #fff; color: #333; box-shadow: inset 0 0 0 1px var(--line); }
+.btn-google:hover { background: #f4f4f4; color: #111; }
+.btn-google .icon { color: #4285f4; }

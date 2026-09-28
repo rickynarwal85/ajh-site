@@ -16,6 +16,8 @@ export const site = {
   hoursShort: '8AM - 5PM',
   about:
     'We are a family run building company based in Hertfordshire. Since 2000 we have been providing professional building services covering domestic renovations, period refurbishments, building extensions, basements and loft conversions in and around Hertfordshire.',
+  // Google Business Profile: reviews, map listing, opening hours.
+  google: 'https://share.google/IWnNDXkjzGcsCCFjJ',
   owner: {
     name: 'Ashley Harknett',
     firstName: 'Ashley',

@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import Slider from '../components/Slider.astro';
 import ContactForm from '../components/ContactForm.astro';
+import Reviews from '../components/Reviews.astro';
 import SocialGateway from '../components/SocialGateway.astro';
 import Icon from '../components/Icon.astro';
 import { site, url } from '../data/site';
@@ -132,6 +133,10 @@ const stages = [
       </div>
     ))}
   </section>
+
+  <hr class="divider" />
+
+  <Reviews />
 
   <hr class="divider" />
 
