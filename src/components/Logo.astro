@@ -1,0 +1,17 @@
+---
+// Vector redraw of the AJH logo: sharp at any size, transparent background.
+// Colour comes from `currentColor`, so the footer can show it in white.
+// DRAFT: redrawn from the old JPG, so it needs the owner's approval. The original is public/images/logo.jpg.
+interface Props { class?: string }
+const { class: className } = Astro.props;
+---
+
+<svg class:list={['logo-svg', className]} viewBox="0 0 330 100" role="img" aria-label="AJH Building Contractors Ltd" fill="currentColor">
+  <!-- Roof, with the house shape cut out -->
+  <path fill-rule="evenodd" d="M0 72 72 4l72 68zM36 72V52l36-24 36 24v20z" />
+  <!-- Window -->
+  <path d="M61 45h22v22H61zm3 3v6.5h6.5V48zm9.5 0v6.5H80V48zM64 57.5V64h6.5v-6.5zm9.5 0V64H80v-6.5z" fill-rule="evenodd" />
+  <text x="150" y="68" font-family="'Arial Black', 'Arial Bold', Arial, sans-serif" font-weight="900" font-size="64" letter-spacing="10">AJH</text>
+  <rect x="2" y="76" width="326" height="3" />
+  <text x="2" y="97" font-family="Arial, sans-serif" font-weight="700" font-size="16.5" letter-spacing="1.2">BUILDING CONTRACTORS LTD</text>
+</svg>

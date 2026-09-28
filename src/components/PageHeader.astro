@@ -1,0 +1,21 @@
+---
+// Banner at the top of inner pages: background photo, title and short intro.
+import { url } from '../data/site';
+
+interface Props {
+  title: string;
+  eyebrow?: string;
+  intro?: string;
+  image?: string;
+}
+const { title, eyebrow, intro, image = '/images/property-development.jpg' } = Astro.props;
+---
+
+<header class="page-header" style={`--header-img: url('${url(image)}')`}>
+  <div class="container">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href={url('/')}>Home</a> <span>/</span> {title}</nav>
+    {eyebrow && <p class="eyebrow eyebrow--light">{eyebrow}</p>}
+    <h1>{title}</h1>
+    {intro && <p class="page-header-intro">{intro}</p>}
+  </div>
+</header>

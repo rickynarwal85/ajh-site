@@ -1,0 +1,17 @@
+---
+// Full-width page band. Alternate `variant`s down a page to give it rhythm.
+interface Props {
+  variant?: 'white' | 'alt' | 'brand' | 'navy';
+  id?: string;
+  /** Narrow the content to a readable line length. */
+  narrow?: boolean;
+  class?: string;
+}
+const { variant = 'white', id, narrow = false, class: className } = Astro.props;
+---
+
+<section id={id} class:list={['section', `section--${variant}`, className]}>
+  <div class:list={['container', { 'container--narrow': narrow }]}>
+    <slot />
+  </div>
+</section>

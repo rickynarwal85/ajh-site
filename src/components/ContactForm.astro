@@ -35,10 +35,6 @@ const { heading = 'Get a free, no-obligation quote' } = Astro.props;
   </form>
 </section>
 
-<style>
-  .contact-section { margin-top: 40px; }
-</style>
-
 <script>
   for (const form of document.querySelectorAll<HTMLFormElement>('[data-preview-form]')) {
     form.addEventListener('submit', (e) => {

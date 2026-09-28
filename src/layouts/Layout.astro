@@ -1,21 +1,27 @@
 ---
 import '../styles/global.css';
 import Icon from '../components/Icon.astro';
+import Logo from '../components/Logo.astro';
+import CtaBand from '../components/CtaBand.astro';
 import { site, socials, mainNav, url } from '../data/site';
 import { services, sidebarServices } from '../data/services';
 
 interface Props {
   title?: string;
   description?: string;
-  /** Hide the "What we do" sidebar (e.g. for wide pages). */
-  noSidebar?: boolean;
+  /** Hide the "Talk to Ashley" band above the footer (e.g. on the Contact page). */
+  hideCta?: boolean;
 }
 
-const { title, description = site.about, noSidebar = false } = Astro.props;
+const { title, description = site.about, hideCta = false } = Astro.props;
 const pageTitle = title ? `${title} | ${site.name}` : `${site.name} | Builders in Hitchin, Hertfordshire`;
 const current = Astro.url.pathname;
 const isActive = (href: string) => current === url(href);
 const isServicePage = services.some((s) => isActive(`/${s.slug}/`));
+
+// Set when building the side-by-side redesign preview (see .github/workflows/deploy.yml).
+const preview = import.meta.env.PUBLIC_PREVIEW;
+const currentVersionHref = current.replace(import.meta.env.BASE_URL.replace(/\/$/, ''), '/ajh-site');
 
 // Tells Google who the business is, where it is and how to contact it (local search).
 const schema = {
@@ -48,37 +54,46 @@ const schema = {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
-    <meta name="theme-color" content="#263997" />
+    <meta name="theme-color" content="#141f55" />
+    {preview && <meta name="robots" content="noindex" />}
     <link rel="icon" type="image/svg+xml" href={url('/favicon.svg')} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&family=Raleway:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Raleway:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
       rel="stylesheet"
     />
     <script type="application/ld+json" set:html={JSON.stringify(schema)} />
   </head>
   <body>
+    {preview && (
+      <div class="preview-banner">
+        Preview of the proposed redesign · <a href={currentVersionHref}>View current version →</a>
+      </div>
+    )}
+
     <div class="top-bar">
       <div class="container top-bar-inner">
         <div class="top-left">
-          <span class="top-item"><Icon name="home" />{site.tagline}</span>
-          <a class="top-item" href={site.whatsappHref} target="_blank" rel="noopener"><Icon name="whatsapp" />{site.mobile}</a>
+          <span class="top-item"><Icon name="home" />Hitchin, Hertfordshire · Since 2000</span>
+          <span class="top-item"><Icon name="clock" />{site.hours}</span>
         </div>
         <div class="top-right">
           <a class="top-item" href={site.phoneHref}><Icon name="phone" />{site.phone}</a>
+          <a class="top-item" href={site.whatsappHref} target="_blank" rel="noopener"><Icon name="whatsapp" />{site.mobile}</a>
           <a class="top-item" href={`mailto:${site.email}`}><Icon name="mail" />{site.email}</a>
-          <span class="top-item"><Icon name="clock" /><strong>{site.hoursShort}</strong></span>
-          {socials.map((s) => (
-            <a class="social" href={s.href} target="_blank" rel="noopener" aria-label={s.label}><Icon name={s.key} /></a>
-          ))}
+          <span class="top-social">
+            {socials.map((s) => (
+              <a href={s.href} target="_blank" rel="noopener" aria-label={s.label}><Icon name={s.key} /></a>
+            ))}
+          </span>
         </div>
       </div>
     </div>
 
     <header class="site-header">
       <div class="container menu-inner">
-        <a href={url('/')} class="logo"><img src={url('/images/logo.jpg')} alt="AJH Building Contractors" width="188" height="64" /></a>
+        <a href={url('/')} class="logo" aria-label="AJH Building Contractors home"><Logo /></a>
         <nav id="main-nav" class="main-nav" aria-label="Main">
           <ul>
             {mainNav.map((item) =>
@@ -111,35 +126,16 @@ const schema = {
       </div>
     </header>
 
-    <div class:list={['container content-wrap', { 'no-sidebar': noSidebar }]}>
-      <main class="content">
-        <slot />
-      </main>
-      {!noSidebar && (
-        <aside class="sidebar">
-          <div class="widget">
-            <h4><span>What we do</span></h4>
-            <ul class="page-list">
-              {sidebarServices.map((s) => (
-                <li><a href={url(`/${s.slug}/`)} class:list={{ active: isActive(`/${s.slug}/`) }}>{s.name}</a></li>
-              ))}
-            </ul>
-          </div>
-          <div class="widget sidebar-cta">
-            <h4><span>Talk to Ashley</span></h4>
-            <p>Questions about your project, planning or building regs? Message Ashley directly.</p>
-            <a class="btn btn-whatsapp btn-block" href={site.whatsappHref} target="_blank" rel="noopener"><Icon name="whatsapp" size={18} /> WhatsApp</a>
-            <a class="btn btn-block" href={site.phoneHref}><Icon name="phone" size={16} /> {site.phone}</a>
-            <a class="btn btn-google btn-block" href={site.google} target="_blank" rel="noopener" style="margin-top:8px"><Icon name="google" size={16} /> Google reviews</a>
-          </div>
-        </aside>
-      )}
-    </div>
+    <main>
+      <slot />
+    </main>
 
-    <section class="footer-widgets">
+    {!hideCta && <CtaBand />}
+
+    <footer class="site-footer">
       <div class="container footer-grid">
-        <div class="widget">
-          <h4><span>About Us</span></h4>
+        <div class="footer-about">
+          <Logo class="logo-footer" />
           <p>{site.about}</p>
           <div class="footer-social">
             {socials.map((s) => (
@@ -147,27 +143,30 @@ const schema = {
             ))}
           </div>
         </div>
-        <div class="widget">
-          <h4><span>Useful Links</span></h4>
+        <div>
+          <h4>Services</h4>
           <ul class="footer-links">
-            {mainNav.filter((i) => !i.services).map((item) => <li><a href={url(item.href)}>{item.label}</a></li>)}
+            {sidebarServices.map((s) => <li><a href={url(`/${s.slug}/`)}>{s.name}</a></li>)}
           </ul>
         </div>
-        <div class="widget">
-          <h4><span>Contact Us</span></h4>
-          <p><strong>Address</strong><br />{site.address}</p>
+        <div>
+          <h4>Company</h4>
+          <ul class="footer-links">
+            {mainNav.filter((i) => !i.services).map((item) => <li><a href={url(item.href)}>{item.label}</a></li>)}
+            <li><a href={site.google} target="_blank" rel="noopener">Google reviews</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <p>{site.address}</p>
           <p>
-            <strong>Phone</strong><br />
             <a href={site.phoneHref}>{site.phone}</a><br />
-            <a href={site.whatsappHref} target="_blank" rel="noopener">{site.mobile} (WhatsApp)</a>
+            <a href={site.whatsappHref} target="_blank" rel="noopener">{site.mobile} (WhatsApp)</a><br />
+            <a href={`mailto:${site.email}`}>{site.email}</a>
           </p>
-          <p><strong>Email</strong><br /><a href={`mailto:${site.email}`}>{site.email}</a></p>
-          <p><strong>Working hours</strong><br />{site.hours}</p>
-          <p><a href={site.google} target="_blank" rel="noopener"><Icon name="google" /> Find us &amp; review us on Google</a></p>
+          <p>{site.hours}</p>
         </div>
       </div>
-    </section>
-    <footer class="site-footer">
       <div class="container footer-bottom">
         <p>© {new Date().getFullYear()} {site.name}. All Rights Reserved.</p>
         <a href={url('/privacy-policy/')}>Privacy Policy</a>

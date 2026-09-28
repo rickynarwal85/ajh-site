@@ -1,7 +1,8 @@
 ---
 import fs from 'node:fs';
 import Layout from '../layouts/Layout.astro';
-import ContactForm from '../components/ContactForm.astro';
+import PageHeader from '../components/PageHeader.astro';
+import Section from '../components/Section.astro';
 import SocialGateway from '../components/SocialGateway.astro';
 import { url } from '../data/site';
 
@@ -22,15 +23,18 @@ const categories = [
 ---
 
 <Layout title="Current Projects">
-  <h1 class="page-title dash-heading">Current Projects</h1>
-  <p class="lead">
-    A selection of recent work. For the very latest, see what's on site this week on our
-    <a href="#follow">social channels</a>.
-  </p>
+  <PageHeader
+    title="Current Projects"
+    eyebrow="Our work"
+    intro="A selection of recent builds. Tap any photo to enlarge it."
+    image="/images/projects-hero.jpg"
+  />
 
+  <Section>
+  <p class="lead">For the very latest, see what's on site this week on our <a href="#follow">social channels</a>.</p>
   {categories.map((c) => (
     <section>
-      <h3>{c.title}</h3>
+      <h2 class="dash-heading" style="font-size:26px">{c.title}</h2>
       <div class="gallery">
         {c.images.map((src, i) => (
           <button type="button" data-full={url(src)} aria-label={`Enlarge ${c.title} photo ${i + 1}`}>
@@ -41,10 +45,11 @@ const categories = [
     </section>
   ))}
 
-  <hr class="divider" />
-  <SocialGateway showFeed />
+  </Section>
 
-  <ContactForm />
+  <Section variant="alt">
+    <SocialGateway showFeed />
+  </Section>
 
   <dialog class="lightbox" aria-label="Photo viewer">
     <div class="lightbox-inner">

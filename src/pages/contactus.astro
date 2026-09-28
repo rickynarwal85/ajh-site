@@ -1,22 +1,30 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Icon from '../components/Icon.astro';
+import PageHeader from '../components/PageHeader.astro';
+import Section from '../components/Section.astro';
 import ContactForm from '../components/ContactForm.astro';
 import { site } from '../data/site';
 ---
 
-<Layout title="Contact us">
-  <h1 class="page-title dash-heading">Contact us</h1>
-  <h3>Contact us anytime</h3>
-  <p>By email, by phone or simply drop by us anytime you want.</p>
+<Layout title="Contact us" hideCta>
+  <PageHeader title="Contact us" eyebrow="Contact us anytime" intro="By email, by phone or simply drop by us anytime you want." />
 
-  <div class="contact-grid">
-    <div><h4>Address</h4><p>{site.address}</p></div>
-    <div><h4>Phone</h4><p><a href={site.phoneHref}>{site.phone}</a></p></div>
-    <div><h4>Mobile / WhatsApp</h4><p><a href={site.whatsappHref} target="_blank" rel="noopener">{site.mobile}</a></p></div>
-    <div><h4>Email</h4><p><a href={`mailto:${site.email}`}>{site.email}</a></p></div>
-    <div><h4>Working hours</h4><p>{site.hours}</p></div>
-    <div><h4>Google</h4><p><a href={site.google} target="_blank" rel="noopener">See us on Google</a></p></div>
-  </div>
-
-  <ContactForm />
+  <Section variant="alt">
+    <div class="contact-layout">
+      <div class="contact-list">
+        <div><h4>Phone</h4><p><a href={site.phoneHref}>{site.phone}</a></p></div>
+        <div><h4>Mobile / WhatsApp</h4><p><a href={site.whatsappHref} target="_blank" rel="noopener">{site.mobile}</a></p></div>
+        <div><h4>Email</h4><p><a href={`mailto:${site.email}`}>{site.email}</a></p></div>
+        <div><h4>Address</h4><p>{site.address}</p></div>
+        <div><h4>Working hours</h4><p>{site.hours}</p></div>
+        <div>
+          <a class="btn btn-google" href={site.google} target="_blank" rel="noopener"><Icon name="google" size={18} /> Find us on Google</a>
+        </div>
+      </div>
+      <div class="form-card">
+        <ContactForm />
+      </div>
+    </div>
+  </Section>
 </Layout>

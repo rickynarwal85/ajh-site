@@ -1,0 +1,20 @@
+---
+// "Talk to Ashley" band shown above the footer on every page (except Contact, which has the form).
+import Icon from './Icon.astro';
+import { site, url } from '../data/site';
+---
+
+<section class="cta-band">
+  <div class="container cta-band-inner">
+    <div>
+      <p class="eyebrow eyebrow--light">Planning a project?</p>
+      <h2>Talk it through with Ashley</h2>
+      <p>Questions about planning, building regs or budget? Get a straight answer from the person who'll build it.</p>
+    </div>
+    <div class="btn-row">
+      <a class="btn btn-lg btn-light" href={url('/contactus/#quote')}>Get a free quote</a>
+      <a class="btn btn-lg btn-whatsapp" href={site.whatsappHref} target="_blank" rel="noopener"><Icon name="whatsapp" size={20} /> WhatsApp</a>
+      <a class="btn btn-lg btn-ghost" href={site.phoneHref}><Icon name="phone" size={18} /> {site.phone}</a>
+    </div>
+  </div>
+</section>

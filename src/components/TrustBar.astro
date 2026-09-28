@@ -1,0 +1,25 @@
+---
+import Icon from './Icon.astro';
+import { site } from '../data/site';
+
+const items = [
+  { icon: 'home', title: '20+ years', text: 'Building across Hertfordshire since 2000' },
+  { icon: 'shield', title: 'Built to regs', text: 'Every job to UK Building Regulations' },
+  { icon: 'user', title: 'One point of contact', text: 'Ashley, from quote to handover' },
+  { icon: 'google', title: 'Free quotes', text: 'No obligation. Read our Google reviews', href: site.google },
+] as const;
+---
+
+<div class="trust-bar">
+  <div class="container trust-grid">
+    {items.map((i) => {
+      const Tag = 'href' in i ? 'a' : 'div';
+      return (
+        <Tag class="trust-item" {...('href' in i ? { href: i.href, target: '_blank', rel: 'noopener' } : {})}>
+          <span class="trust-icon"><Icon name={i.icon} size={22} /></span>
+          <span><strong>{i.title}</strong><small>{i.text}</small></span>
+        </Tag>
+      );
+    })}
+  </div>
+</div>

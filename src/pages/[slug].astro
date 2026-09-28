@@ -1,9 +1,11 @@
 ---
 // One page per service, generated from src/data/services.ts
 import Layout from '../layouts/Layout.astro';
-import ContactForm from '../components/ContactForm.astro';
-import { url } from '../data/site';
-import { services, type Service } from '../data/services';
+import Icon from '../components/Icon.astro';
+import PageHeader from '../components/PageHeader.astro';
+import Section from '../components/Section.astro';
+import { site, url } from '../data/site';
+import { services, sidebarServices, type Service } from '../data/services';
 
 export function getStaticPaths() {
   return services.map((service) => ({ params: { slug: service.slug }, props: { service } }));
@@ -11,19 +13,49 @@ export function getStaticPaths() {
 
 const { service } = Astro.props as { service: Service };
 const description = service.sections.flatMap((s) => s.paragraphs ?? [])[0]?.slice(0, 155);
+const others = sidebarServices.filter((s) => s.slug !== service.slug);
 ---
 
 <Layout title={service.title} description={description}>
-  <h1 class="page-title dash-heading">{service.title}</h1>
-  <img class="hero-img" src={url(service.image)} alt={service.name} />
+  <PageHeader title={service.title} eyebrow="Our services" image={service.slideImage} />
 
-  {service.sections.map((section) => (
-    <section>
-      {section.heading && <h3>{section.heading}</h3>}
-      {section.paragraphs?.map((p) => <p>{p}</p>)}
-      {section.list && <ul>{section.list.map((li) => <li>{li}</li>)}</ul>}
-    </section>
-  ))}
+  <Section>
+    <div class="service-layout">
+      <article class="prose">
+        {service.image !== service.slideImage && <img class="service-img" src={url(service.image)} alt={service.name} />}
+        {service.sections.map((section) => (
+          <>
+            {section.heading && <h3>{section.heading}</h3>}
+            {section.paragraphs?.map((p) => <p>{p}</p>)}
+            {section.list && <ul>{section.list.map((li) => <li>{li}</li>)}</ul>}
+          </>
+        ))}
+      </article>
+      <aside class="quote-card">
+        <h3>Get a quote for {service.name.toLowerCase()}</h3>
+        <ul class="check-list">
+          <li>Free, no-obligation quote</li>
+          <li>Built to UK Building Regulations</li>
+          <li>One point of contact throughout</li>
+        </ul>
+        <a class="btn btn-block" href={url('/contactus/#quote')}>Request a quote</a>
+        <a class="btn btn-whatsapp btn-block" href={site.whatsappHref} target="_blank" rel="noopener"><Icon name="whatsapp" size={18} /> WhatsApp Ashley</a>
+        <a class="btn btn-outline btn-block" href={site.phoneHref}><Icon name="phone" size={16} /> {site.phone}</a>
+      </aside>
+    </div>
+  </Section>
 
-  <ContactForm />
+  <Section variant="alt">
+    <div class="section-head">
+      <h2 class="dash-heading">Other services</h2>
+    </div>
+    <div class="service-grid">
+      {others.map((s) => (
+        <a class="service-card" href={url(`/${s.slug}/`)}>
+          <img src={url(s.slideImage)} alt="" loading="lazy" />
+          <span>{s.name}</span>
+        </a>
+      ))}
+    </div>
+  </Section>
 </Layout>
